@@ -13,25 +13,19 @@
 
 ## Demo
 
-> **TODO: drop a 90-second screen recording here.**
-> On GitHub.com, edit this README in the browser and *drag-and-drop* an `.mp4` /
-> `.mov` / `.gif` into the editor — GitHub uploads it to its CDN and replaces
-> this paragraph with the embed automatically. Recommended capture order:
-> 1. `strata assess --self-assessment samples/maturity_self_assessment.yaml --axis both` (dual-axis heatmap)
-> 2. `strata roadmap --self-assessment samples/maturity_self_assessment.yaml` (90-day plan)
-> 3. Streamlit Deliver tab → run `chain.bva_commentary.v1` with sample inputs (rubric grading)
+https://github.com/user-attachments/assets/demo.mp4
 
-<!-- demo video / GIF goes here -->
+> _3-minute walkthrough: title & architecture, dual-axis CLI maturity assessment, visual heatmaps, 90-day phased roadmap, deliverable chain execution pipeline, 12 deliverables overview, and tech stack._
 
 ### Screenshots
 
-> **TODO: add screenshots.** Same drag-and-drop trick works for `.png`. Capture:
->
-> | File | What to show |
-> |---|---|
-> | `docs/screenshots/01-assess.png` | Streamlit **Assess** tab with both heatmaps side by side |
-> | `docs/screenshots/02-roadmap.png` | **Roadmap** tab showing all three phases expanded |
-> | `docs/screenshots/03-deliver.png` | **Deliver** tab mid-run: chain selected, draft rendered, iteration history shown |
+| Screenshot | What it shows |
+|---|---|
+| ![Assess tab](docs/screenshots/01-assess.png) | **Assess** tab — dual-axis heatmap (function + competency) with KPI summary cards |
+| ![Roadmap tab](docs/screenshots/02-roadmap.png) | **Roadmap** tab — 90-day phased plan (Baseline, Scale, Embed) with capability scores |
+| ![Deliver tab](docs/screenshots/03-deliver.png) | **Deliver** tab — chain selector + 5-stage execution pipeline + score history |
+| ![12 Deliverables](docs/screenshots/04-deliverables.png) | **12 chain-driven deliverables** covering board, BvA, M&A, investor, 3-statement, risk, and more |
+| ![Tech Stack](docs/screenshots/05-techstack.png) | **Tech stack** — Python 3.12, Streamlit, PostgreSQL, Pydantic, pluggable LLM backends |
 
 ---
 

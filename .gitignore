@@ -4,6 +4,7 @@ __pycache__/
 build/
 dist/
 .venv/
+.venv2/
 venv/
 
 .env
@@ -21,6 +22,10 @@ htmlcov/
 
 # Streamlit user uploads (GL extracts, etc.)
 .streamlit_uploads/
+
+# Build artifacts
+create_demo_video.py
+streamlit.log
 
 # Railway / deploy artifacts that shouldn't ship
 .railway/

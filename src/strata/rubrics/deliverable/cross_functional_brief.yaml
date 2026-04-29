@@ -4,8 +4,7 @@ name: Cross-Functional Bi-Weekly Brief
 version: 1
 description: >
   Grades a 30-minute bi-weekly check-in agenda between the CFO and a peer
-  function (sales, operations, product). Modeled on Tool 3 of the Modern CFO
-  Handbook.
+  function (sales, operations, product).
 
 groups:
 

@@ -42,7 +42,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-        "About": "Strata: maturity-assessed, rubric-graded AI copilot for the CFO/VP Finance function.",
+        "About": "Strata: maturity-assessed, rubric-graded AI operating system for the CFO/VP Finance function.",
     },
 )
 
@@ -142,7 +142,7 @@ def _heatmap_chart(result: AssessmentResult, title: str):
 
 
 st.sidebar.title("Strata")
-st.sidebar.caption("Maturity-assessed, rubric-graded AI copilot for the CFO / VP Finance function.")
+st.sidebar.caption("Maturity-assessed, rubric-graded AI operating system for the CFO / VP Finance function.")
 
 with st.sidebar.expander("Backend status", expanded=False):
     backend = os.getenv("STRATA_LLM_BACKEND", "openai")
@@ -204,7 +204,7 @@ with tab_assess:
             with cols[1]:
                 st.metric("Competency-axis overall", f"{c_res.overall_pct:.1f}%")
                 st.altair_chart(
-                    _heatmap_chart(c_res, "Competency (CFO Handbook pillars)"),
+                    _heatmap_chart(c_res, "Competency (strategic-CFO pillars)"),
                     use_container_width=True,
                 )
 

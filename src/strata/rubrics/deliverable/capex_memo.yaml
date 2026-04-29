@@ -5,7 +5,8 @@ version: 1
 description: >
   Grades a capital-deployment memo (non-M&A) for the capital council on
   thesis clarity, financial rigor, risk transparency, and decision frame.
-  Modeled on Tool 5 of the Modern CFO Handbook (Stage 2 - Diligence).
+  Stage 2 (Diligence) of a 4-stage capital-allocation gate process:
+  ideation -> diligence -> execution -> post-investment review.
 
 groups:
 

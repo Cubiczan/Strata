@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "strata"
 version = "0.7.0"
-description = "Maturity-assessed, rubric-graded AI copilot for the CFO / VP Finance function"
+description = "Maturity-assessed, rubric-graded AI operating system for the CFO / VP Finance function"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{ name = "Shyam Desigan" }]

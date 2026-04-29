@@ -5,7 +5,6 @@ version: 1
 description: >
   Grades a 10-minute employee all-hands segment from the CFO on plain-English
   signal, visual storytelling, and connection to employees' work.
-  Modeled on Tool 3 of the Modern CFO Handbook.
 
 groups:
 

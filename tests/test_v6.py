@@ -1,4 +1,4 @@
-"""v6: full Tool 3 deliverable parity + 90-day roadmap generator."""
+"""v6: communication-playbook deliverable parity + 90-day roadmap generator."""
 from __future__ import annotations
 
 import json

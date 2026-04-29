@@ -4,8 +4,8 @@ name: Post-Investment Review
 version: 1
 description: >
   Grades a 12-month or 24-month post-investment review on attribution rigor,
-  honest assessment, learning capture, and forward action. Modeled on Tool 5
-  Stage 4 of the Modern CFO Handbook.
+  honest assessment, learning capture, and forward action. Stage 4 of a
+  4-stage capital-allocation gate process.
 
 groups:
 

@@ -100,10 +100,10 @@ def assess(
         f = _load_assessment(self_assessment, axis="function")
         c = _load_assessment(self_assessment, axis="competency")
         _print_heatmap(f, "Function-axis heatmap")
-        _print_heatmap(c, "Competency-axis heatmap (CFO Handbook pillars)")
+        _print_heatmap(c, "Competency-axis heatmap (strategic-CFO pillars)")
         return
     result = _load_assessment(self_assessment, axis=axis)
-    label = "Maturity heatmap" if axis == "function" else "Competency heatmap (CFO Handbook pillars)"
+    label = "Maturity heatmap" if axis == "function" else "Competency heatmap (strategic-CFO pillars)"
     _print_heatmap(result, label)
 
 

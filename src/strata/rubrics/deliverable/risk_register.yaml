@@ -4,7 +4,8 @@ name: Enterprise Risk Register
 version: 1
 description: >
   Grades a risk-register draft on coverage, scoring discipline, control mapping,
-  and governance fitness. Modeled on Tool 4 of the Modern CFO Handbook.
+  and governance fitness. Modeled on the standard 5-step ERM workflow:
+  identification, assessment, control mapping, monitoring, governance.
 
 groups:
 

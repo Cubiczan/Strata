@@ -100,7 +100,7 @@ rb.function.capital_allocation:
   pipeline_dashboard:            2
   model_template_reuse:          1
 
-# ---------- Competency axis (CFO Handbook Tool 1) ----------
+# ---------- Competency axis (strategic-CFO pillars) ----------
 
 rb.competency.strategic_leadership:
   thinks_like_a_gm:              3

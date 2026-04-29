@@ -1,6 +1,6 @@
 # Strata
 
-> **Maturity-assessed, rubric-graded AI copilot for the CFO / VP Finance function.**
+> **Maturity-assessed, rubric-graded AI operating system for the CFO / VP Finance function.**
 > Two-axis maturity assessment + 12 chain-driven deliverables, all underpinned by one
 > hierarchical rubric schema. Handbook-aligned, LLM-agnostic, deploy-ready.
 
@@ -46,9 +46,11 @@ deliverable, and every grading run shares a single hierarchical rubric schema �
 so the same engine that scores "how mature is your monthly close" also scores
 "how good is this draft of the board pack."
 
-It's modeled on the [Modern CFO Handbook](#references) but built clean-room,
-permissively licensed in inspiration, and shipping with a working Postgres
-schema, Streamlit UI, and Railway deployment.
+It's an opinionated implementation of the modern strategic-CFO function:
+the operational scorecard, the competency archetype, the standing
+deliverables, and the 90-day rollout plan — wired together as a single
+clean-room codebase shipping with Postgres schema, Streamlit UI, and
+Railway deployment.
 
 ---
 
@@ -60,7 +62,7 @@ schema, Streamlit UI, and Railway deployment.
 ├───────────────────────────────────────────────────────────────────┤
 │  L1  MATURITY ASSESSMENT                                          │
 │      Function axis      : 8 process capabilities                  │
-│      Competency axis    : 5 CFO Handbook pillars                  │
+│      Competency axis    : 5 strategic-CFO pillars                 │
 │      90-day Roadmap     : phased plan keyed off the heatmap       │
 ├───────────────────────────────────────────────────────────────────┤
 │  L2  CAPABILITY CATALOG                                           │
@@ -104,7 +106,7 @@ schema, Streamlit UI, and Railway deployment.
 | Enterprise Risk Management | `rb.function.risk` |
 | Capital Allocation Discipline | `rb.function.capital_allocation` |
 
-### L1 — 5 competency-axis pillars (CFO Handbook Tool 1)
+### L1 — 5 competency-axis pillars (strategic-CFO archetype)
 
 | Pillar | Rubric ID |
 |---|---|
@@ -131,16 +133,16 @@ schema, Streamlit UI, and Railway deployment.
 | `chain.cross_functional_brief.v1` | `rb.deliverable.cross_functional_brief` | Bi-weekly peer-function brief |
 | `chain.earnings_script.v1` | `rb.deliverable.earnings_script` | Earnings call script + Q&A prep |
 
-### Modern CFO Handbook coverage
+### CFO function coverage
 
-| Handbook tool | Strata coverage |
+| Strategic CFO surface | Strata coverage |
 |---|---|
-| Tool 1 — CFO Competency Scorecard (5×4 cells) | ✅ 20/20 cells |
-| Tool 2 — One-page CFO Dashboard | ✅ chain + rubric |
-| Tool 3 — Communication Playbook (5 venues) | ✅ board, investor letter, employee, cross-functional, earnings |
-| Tool 4 — ERM Framework | ✅ capability + risk-register deliverable |
-| Tool 5 — Capital Allocation (4-stage gate) | ✅ capability + capex memo + post-investment review |
-| Step 10 — 90-day phased roadmap | ✅ `plan_90_days` API + CLI + Streamlit tab |
+| 5-pillar competency scorecard (5×4 cells) | ✅ 20/20 cells |
+| One-page value-creation dashboard | ✅ chain + rubric |
+| Communication playbook across 5 venues | ✅ board, investor letter, employee, cross-functional, earnings |
+| Enterprise risk management framework | ✅ capability + risk-register deliverable |
+| Capital-allocation discipline (4-stage gate) | ✅ capability + capex memo + post-investment review |
+| 90-day phased rollout roadmap | ✅ `plan_90_days` API + CLI + Streamlit tab |
 
 ---
 
@@ -338,6 +340,4 @@ Open Risk, FinRobot, FP&A AI Agent).
 
 ## References
 
-- Modern CFO Handbook (Forward Firm, 2026) — the 5-pillar competency model and
-  90-day roadmap framework that drove the L1 competency axis and `plan_90_days`.
-- See [NOTICE](./NOTICE) for the full upstream-inspiration list.
+See [NOTICE](./NOTICE) for the full upstream-inspiration list.

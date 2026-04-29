@@ -3,9 +3,9 @@ scope: function
 name: Strategic Financial Leadership
 version: 1
 description: >
-  Pillar 1 of the Modern CFO Handbook competency model. Scores the CFO's
-  strategic-leadership competency across four sub-dimensions. Strata's 1-4
-  scale maps to the handbook's 1-5 scale by linear scaling.
+  Pillar 1 of the strategic-CFO competency model. Scores the CFO's
+  strategic-leadership competency across four sub-dimensions on a 1-4 scale
+  (Mastery / Proficient / Developing / Urgent).
 
 groups:
 

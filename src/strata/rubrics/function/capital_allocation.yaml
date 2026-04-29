@@ -4,8 +4,8 @@ name: Capital Allocation Discipline
 version: 1
 description: >
   Maturity of the capital-deployment workflow across the five lenses.
-  Modeled on Tool 5 of the Modern CFO Handbook: ideation -> diligence ->
-  execution -> post-investment review with stage gates and IRR hurdles.
+  Modeled on a 4-stage capital-allocation gate process: ideation -> diligence
+  -> execution -> post-investment review with stage gates and IRR hurdles.
 
 groups:
 

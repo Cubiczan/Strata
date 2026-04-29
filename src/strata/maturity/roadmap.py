@@ -1,7 +1,6 @@
 """90-day roadmap generator.
 
-Converts an AssessmentResult into a phased plan modeled on the Modern CFO
-Handbook's three phases:
+Converts an AssessmentResult into a phased plan with three standard phases:
 
   Days  1-30 (Baseline & Quick Wins): assessment + dashboard + 1 pilot on the
                                       single weakest capability with a chain

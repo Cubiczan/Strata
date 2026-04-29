@@ -4,7 +4,7 @@ name: Enterprise Risk Management
 version: 1
 description: >
   Maturity of the Enterprise Risk Management function across the five lenses.
-  Modeled on Tool 4 of the Modern CFO Handbook: identification, assessment,
+  Modeled on the standard 5-step ERM workflow: identification, assessment,
   control mapping, monitoring, and governance.
 
 groups:

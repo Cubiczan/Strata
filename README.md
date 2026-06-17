@@ -60,7 +60,7 @@ Railway deployment.
 │      90-day Roadmap     : phased plan keyed off the heatmap       │
 ├───────────────────────────────────────────────────────────────────┤
 │  L2  CAPABILITY CATALOG                                           │
-│      22 skills bucketed across ingest / record / analyze / plan / │
+│      25 skills bucketed across ingest / record / analyze / plan / │
 │      present phases; each skill ties to a capability and may      │
 │      drive a deliverable rubric                                   │
 ├───────────────────────────────────────────────────────────────────┤

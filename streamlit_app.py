@@ -33,6 +33,11 @@ from strata.orchestrator import all_chains
 from strata.orchestrator.director import Director
 from strata.schema import CharacteristicScore
 
+# --- Datadog LLM Observability (no-op unless DD_LLMOBS_ENABLED) ---
+from strata.observability import init_observability
+
+init_observability("strata")
+
 PROJECT_ROOT = Path(__file__).resolve().parent
 SAMPLES = PROJECT_ROOT / "samples"
 

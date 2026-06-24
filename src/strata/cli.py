@@ -21,6 +21,11 @@ from strata.orchestrator.chains import all_chains
 from strata.orchestrator.director import Director
 from strata.schema import CharacteristicScore
 
+# --- Datadog LLM Observability (no-op unless DD_LLMOBS_ENABLED) ---
+from strata.observability import init_observability
+
+init_observability("strata")
+
 app = typer.Typer(no_args_is_help=True, add_completion=False)
 console = Console()
 

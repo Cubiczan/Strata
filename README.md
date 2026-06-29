@@ -1,5 +1,7 @@
 # Strata
 
+> **Cubiczan stack** — [Profile](https://github.com/Cubiczan) · [CHP](https://github.com/Cubiczan/consensus-hardening-protocol) · **You are here:** `Strata`
+
 > **Maturity-assessed, rubric-graded AI operating system for the CFO / VP Finance function.**
 > Two-axis maturity assessment + 12 chain-driven deliverables, all underpinned by one
 > hierarchical rubric schema. Handbook-aligned, LLM-agnostic, deploy-ready.
@@ -322,6 +324,15 @@ strata/
 ```
 
 ---
+
+---
+
+## Cubiczan stack
+
+| Finance | [Strata](https://github.com/Cubiczan/Strata) · [Metabocommand](https://github.com/Cubiczan/Metabocommand) · [meshcfo](https://github.com/Cubiczan/meshcfo) · [working-capital-optimizer](https://github.com/Cubiczan/working-capital-optimizer) · [cash-flow-optimizer](https://github.com/Cubiczan/cash-flow-optimizer) · [finance-cockpit](https://github.com/Cubiczan/finance-cockpit) |
+| Governance | [consensus-hardening-protocol](https://github.com/Cubiczan/consensus-hardening-protocol) · [agent-conductor](https://github.com/Cubiczan/agent-conductor) · [compliance-as-code-agent](https://github.com/Cubiczan/compliance-as-code-agent) · [cleanmandate](https://github.com/Cubiczan/cleanmandate) |
+
+Strata produces **maturity roadmaps and deliverable chains**; [meshcfo](https://github.com/Cubiczan/meshcfo) and [Metabocommand](https://github.com/Cubiczan/Metabocommand) execute operational finance workflows under [CHP](https://github.com/Cubiczan/consensus-hardening-protocol) governance.
 
 ## License
 

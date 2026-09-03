@@ -1,0 +1,7 @@
+schema: spec-driven
+
+# Cubiczan Strata — specs are created as capabilities are touched (brownfield).
+# Do not generate a spec for the whole existing OS.
+context: |
+  Strata is Cubiczan's CFO maturity OS. CHP is the lock; MCP is the pipe.
+  Brand spelling is Cubiczan (never CubicZan).

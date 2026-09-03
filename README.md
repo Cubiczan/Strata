@@ -54,7 +54,7 @@ Railway deployment.
 
 ```
 ┌───────────────────────────────────────────────────────────────────┐
-│  L0  USER SHELL                  (CLI · Streamlit UI)             │
+│  L0  USER SHELL                  (CLI · Streamlit UI · stdio MCP) │
 ├───────────────────────────────────────────────────────────────────┤
 │  L1  MATURITY ASSESSMENT                                          │
 │      Function axis      : 8 process capabilities                  │
@@ -152,7 +152,7 @@ cd strata
 # 2) Virtualenv + install (Windows bash; on macOS/Linux use .venv/bin/activate)
 python -m venv .venv
 source .venv/Scripts/activate
-pip install -e ".[dev,llm,ui]"
+pip install -e ".[dev,llm,ui,mcp]"
 
 # 3) Configure env (copy then edit; never commit your real .env)
 cp .env.example .env
@@ -166,7 +166,10 @@ strata assess --self-assessment samples/maturity_self_assessment.yaml --axis bot
 strata roadmap --self-assessment samples/maturity_self_assessment.yaml
 strata board-pack --inputs samples/board_pack_inputs.json
 
-# 6) Or launch the Streamlit UI
+# 6) Stdio MCP pipe (Cursor / Claude Code) — same fixtures
+python -m strata.mcp
+
+# 7) Or launch the Streamlit UI
 streamlit run streamlit_app.py
 ```
 
@@ -250,6 +253,68 @@ The `--use-llm` flag swaps the mock author + grader for the configured LLM backe
 
 ---
 
+## Stdio MCP
+
+CHP is the lock; MCP is the pipe. [`@cubiczan/strata-mcp`](./mcp) wraps the real
+Strata assessor, deliverable factory, and `plan_90_days` entrypoints so Cursor or
+Claude Code can call them. It does **not** rebuild the OS or invent rubric items.
+
+Install the extra, then add the server:
+
+```bash
+pip install -e ".[mcp]"
+```
+
+### Cursor / Claude Desktop (`mcp.json`)
+
+```json
+{
+  "mcpServers": {
+    "strata": {
+      "command": "python",
+      "args": ["-m", "strata.mcp"]
+    }
+  }
+}
+```
+
+After the npm package is published:
+
+```json
+{
+  "mcpServers": {
+    "strata": {
+      "command": "npx",
+      "args": ["-y", "@cubiczan/strata-mcp"]
+    }
+  }
+}
+```
+
+### Claude Code
+
+```bash
+claude mcp add strata -- python -m strata.mcp
+# after publish:
+claude mcp add strata -- npx -y @cubiczan/strata-mcp
+```
+
+| Tool | Maps to | Purpose |
+|------|---------|---------|
+| `assess_maturity` | `MaturityAssessor` / `CompetencyAssessor` | Dual-axis CFO heatmap |
+| `plan_90_day_roadmap` | `plan_90_days` | 90-day Baseline / Scale / Embed plan |
+| `list_chains` | `all_chains()` | Fetch shipped deliverable chains |
+| `run_chain` | `Director.run_chain` | Rubric-grade one chain |
+| `route_chain` | `Director.route` | Weakest-capability chain, then score it |
+| `list_rubrics` | `registry.load_all()` | In-repo rubrics only |
+| `strata_version` | — | Cubiczan / Strata versions |
+
+Fixtures: [`samples/maturity_self_assessment.yaml`](./samples/maturity_self_assessment.yaml)
+and [`samples/*_inputs.json`](./samples). Packaging for later npm publish lives in
+[`mcp/`](./mcp); do not publish from a routine change.
+
+---
+
 ## Streamlit UI
 
 `streamlit run streamlit_app.py` opens a three-tab UI:
@@ -289,6 +354,7 @@ The non-`live_*` suite runs entirely offline — no API keys, no Docker. Tests:
 | Perception adapters | GL CSV aggregation, identity passthrough |
 | Alembic migrations | linear chain, ORM-table parity, round-trip on SQLite |
 | CLI | every subcommand + axis flag + error paths |
+| Stdio MCP | tools/list + assessment/roadmap against `samples/` |
 
 ---
 
@@ -303,6 +369,7 @@ strata/
 │   ├── config.py              # env-driven Settings
 │   ├── db.py                  # SQLAlchemy engine + session_scope
 │   ├── cli.py                 # Typer CLI entrypoints
+│   ├── mcp/                   # L0 stdio MCP (Cursor / Claude Code pipe)
 │   ├── rubrics/
 │   │   ├── deliverable/       # 12 deliverable rubrics
 │   │   ├── function/          # 8 function-axis capability rubrics
@@ -313,8 +380,9 @@ strata/
 │   ├── orchestrator/          # L3 Director, chain registry, decide/route logic
 │   └── perception/            # Source-system adapters (CSV GL today)
 ├── migrations/                # Alembic migrations
+├── mcp/                       # @cubiczan/strata-mcp packaging (stdio pipe; not published from routine runs)
 ├── samples/                   # 12 input JSONs + GL extract CSV + self-assessment YAML
-├── tests/                     # 155 tests
+├── tests/                     # 155 tests + MCP stdio smoke
 ├── streamlit_app.py
 ├── Dockerfile
 ├── railway.toml

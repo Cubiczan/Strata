@@ -42,9 +42,13 @@ ui = [
     "pandas>=2.1",
     "altair>=5.2",
 ]
+mcp = [
+    "mcp>=2.0,<3",
+]
 
 [project.scripts]
 strata = "strata.cli:app"
+strata-mcp = "strata.mcp.server:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/strata"]

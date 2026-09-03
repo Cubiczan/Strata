@@ -1,0 +1,56 @@
+{
+  "name": "@cubiczan/strata-mcp",
+  "version": "0.7.0",
+  "description": "Stdio MCP pipe for Cubiczan Strata — CFO maturity assessment, rubric-graded deliverables, 90-day roadmap.",
+  "mcpName": "io.github.cubiczan/strata-mcp",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "strata-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node -e \"const fs=require('fs');const p='dist/index.js';let t=fs.readFileSync(p,'utf8');if(!t.startsWith('#!'))fs.writeFileSync(p,'#!/usr/bin/env node\\n'+t);fs.chmodSync(p,0o755)\"",
+    "start": "node dist/index.js",
+    "dev": "node --import tsx src/index.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "strata",
+    "cfo",
+    "maturity",
+    "roadmap",
+    "finance",
+    "cubiczan",
+    "claude",
+    "cursor"
+  ],
+  "author": "Shyam Desigan <sam@cubiczan.com>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cubiczan/Strata.git",
+    "directory": "mcp"
+  },
+  "homepage": "https://github.com/Cubiczan/Strata#stdio-mcp",
+  "bugs": {
+    "url": "https://github.com/Cubiczan/Strata/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.8.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

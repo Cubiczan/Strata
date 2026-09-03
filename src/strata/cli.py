@@ -5,24 +5,17 @@ import json
 from pathlib import Path
 
 import typer
-import yaml
 from rich.console import Console
 from rich.table import Table
 
 from strata import registry
-from strata.maturity import (
-    CAPABILITY_RUBRIC_IDS,
-    COMPETENCY_RUBRIC_IDS,
-    AssessmentResult,
-    CompetencyAssessor,
-    MaturityAssessor,
-)
-from strata.orchestrator.chains import all_chains
-from strata.orchestrator.director import Director
-from strata.schema import CharacteristicScore
+from strata.maturity import AssessmentResult
+from strata.maturity.load import load_assessment_file
 
 # --- Datadog LLM Observability (no-op unless DD_LLMOBS_ENABLED) ---
 from strata.observability import init_observability
+from strata.orchestrator.chains import all_chains
+from strata.orchestrator.director import Director
 
 init_observability("strata")
 
@@ -30,28 +23,11 @@ app = typer.Typer(no_args_is_help=True, add_completion=False)
 console = Console()
 
 
-def _scores_from_yaml(raw: dict, rubric_ids: tuple[str, ...], path: Path) -> dict[str, list[CharacteristicScore]]:
-    by_rubric: dict[str, list[CharacteristicScore]] = {}
-    for rid in rubric_ids:
-        if rid not in raw:
-            raise typer.BadParameter(f"missing scores for rubric '{rid}' in {path}")
-        by_rubric[rid] = [
-            CharacteristicScore(characteristic_id=cid, score=int(s), rationale="self-assessed")
-            for cid, s in raw[rid].items()
-        ]
-    return by_rubric
-
-
 def _load_assessment(path: Path, axis: str = "function") -> AssessmentResult:
-    raw = yaml.safe_load(path.read_text(encoding="utf-8"))
-    target_id = raw.get("target_id", "unnamed")
-    if axis == "function":
-        by_rubric = _scores_from_yaml(raw, CAPABILITY_RUBRIC_IDS, path)
-        return MaturityAssessor().assess(target_id=target_id, scores_by_rubric=by_rubric)
-    if axis == "competency":
-        by_rubric = _scores_from_yaml(raw, COMPETENCY_RUBRIC_IDS, path)
-        return CompetencyAssessor().assess(target_id=target_id, scores_by_rubric=by_rubric)
-    raise typer.BadParameter(f"axis must be 'function' or 'competency', got '{axis}'")
+    try:
+        return load_assessment_file(path, axis=axis)
+    except ValueError as exc:
+        raise typer.BadParameter(str(exc)) from exc
 
 
 def _print_heatmap(result: AssessmentResult, label: str) -> None:
@@ -186,7 +162,7 @@ def exemplars_ingest(
     score_pct: float | None = typer.Option(None, "--score-pct"),
 ) -> None:
     """Add a past deliverable draft to the exemplar store."""
-    from strata.vector import Exemplar, get_default_store, NullExemplarStore
+    from strata.vector import Exemplar, NullExemplarStore, get_default_store
     from strata.vector.exemplars import make_exemplar_id
 
     store = get_default_store()
@@ -212,7 +188,7 @@ def exemplars_search(
     top_k: int = typer.Option(3, "--top-k", "-k"),
 ) -> None:
     """Show top-K most similar past drafts for a chain."""
-    from strata.vector import get_default_store, NullExemplarStore
+    from strata.vector import NullExemplarStore, get_default_store
 
     store = get_default_store()
     if isinstance(store, NullExemplarStore):

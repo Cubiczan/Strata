@@ -5,6 +5,7 @@ from strata.maturity.assessor import (
     MaturityAssessor,
 )
 from strata.maturity.competency import COMPETENCY_RUBRIC_IDS, CompetencyAssessor
+from strata.maturity.load import load_assessment, load_assessment_file
 from strata.maturity.roadmap import (
     Roadmap,
     RoadmapAction,
@@ -13,14 +14,16 @@ from strata.maturity.roadmap import (
 )
 
 __all__ = [
-    "MaturityAssessor",
+    "CAPABILITY_RUBRIC_IDS",
+    "COMPETENCY_RUBRIC_IDS",
     "AssessmentResult",
     "CapabilitySnapshot",
-    "CAPABILITY_RUBRIC_IDS",
     "CompetencyAssessor",
-    "COMPETENCY_RUBRIC_IDS",
+    "MaturityAssessor",
     "Roadmap",
     "RoadmapAction",
     "RoadmapPhase",
+    "load_assessment",
+    "load_assessment_file",
     "plan_90_days",
 ]

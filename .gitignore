@@ -33,3 +33,7 @@ streamlit.log
 .idea/
 .vscode/
 .DS_Store
+
+# NPM packaging for @cubiczan/strata-mcp (built on publish)
+mcp/node_modules/
+mcp/dist/

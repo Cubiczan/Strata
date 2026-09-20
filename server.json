@@ -6,23 +6,5 @@
     "url": "https://github.com/icohangar-ops/strata",
     "source": "github"
   },
-  "version": "0.7.0",
-  "packages": [
-    {
-      "registryType": "pypi",
-      "identifier": "strata",
-      "version": "0.7.0",
-      "transport": {
-        "type": "stdio"
-      },
-      "environmentVariables": [
-        {
-          "name": "DATABASE_URL",
-          "description": "Postgres connection for registry-backed tools. Omit to run the offline deterministic assessors only.",
-          "isRequired": false,
-          "isSecret": true
-        }
-      ]
-    }
-  ]
+  "version": "0.7.0"
 }

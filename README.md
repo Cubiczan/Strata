@@ -331,6 +331,10 @@ strata/
 
 Strata produces **maturity roadmaps and deliverable chains**; [meshcfo](https://github.com/Cubiczan/meshcfo) and [Metabocommand](https://github.com/Cubiczan/Metabocommand) execute operational finance workflows under [CHP](https://github.com/Cubiczan/consensus-hardening-protocol) governance.
 
+## MCP publishing & Rust parity
+
+`server.json` publishes the stdio MCP server (`src/strata/mcp.py`) in the `io.github.icohangar-ops/strata` namespace, following the same convention as `battery-erp`. `tests/test_rust_parity.py` pins Python `RubricScoreReport.compute` and the Rust `strata-core` binary (`rust/src/lib.rs::compute_rubric_score`, reached via `src/strata/rust_core.py`) to identical weighted totals, normalized percentages, and pass decisions — a divergence fails CI loudly. Both tests skip with an explicit reason when cargo is unavailable.
+
 ## License
 
 Proprietary. See [NOTICE](./NOTICE) for upstream attribution and clean-room

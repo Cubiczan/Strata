@@ -333,7 +333,7 @@ Strata produces **maturity roadmaps and deliverable chains**; [meshcfo](https://
 
 ## MCP publishing & Rust parity
 
-`server.json` publishes the stdio MCP server (`src/strata/mcp.py`) in the `io.github.icohangar-ops/strata` namespace, following the same convention as `battery-erp`. `tests/test_rust_parity.py` pins Python `RubricScoreReport.compute` and the Rust `strata-core` binary (`rust/src/lib.rs::compute_rubric_score`, reached via `src/strata/rust_core.py`) to identical weighted totals, normalized percentages, and pass decisions — a divergence fails CI loudly. Both tests skip with an explicit reason when cargo is unavailable.
+`server.json` publishes the stdio MCP server (`src/strata/mcp.py`) in the `io.github.icohangar-ops/strata` namespace, following the same convention as `battery-erp`. `tests/test_rust_parity.py` pins Python `RubricScoreReport.compute` and the Rust `strata-core` binary (`rust/src/lib.rs::compute_rubric_score`, reached via `src/strata/rust_core.py`) to identical weighted totals, normalized percentages, and pass decisions — a divergence fails CI loudly. All three tests (`test_python_and_rust_agree_on_pass_case`, `test_python_and_rust_agree_on_fail_case`, `test_python_and_rust_agree_at_threshold_boundary`) skip with an explicit reason when cargo is unavailable.
 
 ## License
 

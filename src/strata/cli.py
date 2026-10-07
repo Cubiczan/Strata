@@ -87,7 +87,11 @@ def _print_factory_result(r) -> None:
 def board_pack(
     inputs: Path = typer.Option(..., exists=True, readable=True, help="JSON inputs file"),
     persist: bool = typer.Option(False, help="Persist run to Postgres (requires DB)"),
-    use_llm: bool = typer.Option(False, "--use-llm", help="Use Anthropic LLM for author + grader"),
+    use_llm: bool = typer.Option(
+        False,
+        "--use-llm",
+        help="Use the configured LLM backend (DashScope by default, or Amazon Nova on Bedrock)",
+    ),
 ) -> None:
     """L3 + L4: run the board-pack chain end-to-end."""
     payload = json.loads(inputs.read_text(encoding="utf-8"))

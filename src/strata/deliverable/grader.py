@@ -1,4 +1,4 @@
-"""Rubric grader. LLM-agnostic protocol with a deterministic mock and an Anthropic backend."""
+"""Rubric grader. LLM-agnostic protocol with a deterministic mock, DashScope, and Bedrock."""
 
 from __future__ import annotations
 
@@ -64,27 +64,29 @@ def _extract_block(text: str, tag: str) -> str:
     return m.group(1).strip()
 
 
-# ---------------------------- Anthropic backend (optional) ----------------------------
+# ---------------------------- Amazon Bedrock backend (optional) ----------------------------
 
 
-class AnthropicLLM:  # pragma: no cover - integration only; covered by live e2e
-    def __init__(self, model: str | None = None, api_key: str | None = None) -> None:
-        try:
-            import anthropic
-        except ImportError as e:
-            raise ImportError("install with `pip install -e '.[llm]'` to use Anthropic") from e
+class BedrockLLM:
+    """Amazon Nova grader via Bedrock Runtime Converse. Lazy-imports boto3."""
+
+    def __init__(self, model: str | None = None, region: str | None = None) -> None:
+        from strata.deliverable.bedrock import bedrock_runtime_client
+
         s = get_settings()
-        self._client = anthropic.Anthropic(api_key=api_key or s.anthropic_api_key)
+        self._client = bedrock_runtime_client(region)
         self._model = model or s.grader_model
 
     def complete(self, system: str, user: str) -> str:
-        msg = self._client.messages.create(
+        from strata.deliverable.bedrock import converse_text
+
+        return converse_text(
+            self._client,
             model=self._model,
-            max_tokens=2048,
             system=system,
-            messages=[{"role": "user", "content": user}],
+            user=user,
+            max_tokens=2048,
         )
-        return "".join(b.text for b in msg.content if hasattr(b, "text"))
 
 
 class OpenAICompatibleLLM:  # pragma: no cover - integration only; covered by live e2e

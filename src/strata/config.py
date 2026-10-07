@@ -10,19 +10,27 @@ from dotenv import load_dotenv
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 # Default LLM backend = OpenAI-compatible pointing at DashScope International.
-# Set STRATA_LLM_BACKEND=anthropic (and ANTHROPIC_API_KEY) to switch.
+# Set STRATA_LLM_BACKEND=bedrock to use Amazon Nova on Amazon Bedrock.
 _DEFAULT_DASHSCOPE_BASE_URL = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+BEDROCK_AUTHOR_MODEL = "us.amazon.nova-pro-v1:0"
+BEDROCK_GRADER_MODEL = "us.amazon.nova-lite-v1:0"
+DEFAULT_BEDROCK_REGION = "us-east-1"
+REMOVED_ANTHROPIC_BACKEND = (
+    "STRATA_LLM_BACKEND=anthropic is no longer supported. Claude has been removed. "
+    "Set STRATA_LLM_BACKEND=bedrock to use Amazon Nova on Amazon Bedrock "
+    f"(author: {BEDROCK_AUTHOR_MODEL}, grader: {BEDROCK_GRADER_MODEL})."
+)
 
 
 @dataclass(frozen=True)
 class Settings:
     database_url: str
-    llm_backend: str  # "openai" (DashScope-compatible) | "anthropic"
-    llm_api_key: str | None  # active backend key
-    llm_base_url: str | None  # active backend base URL (None = SDK default)
+    llm_backend: str  # "openai" (DashScope-compatible) | "bedrock"
+    llm_api_key: str | None  # active backend key (None for Bedrock credential chain)
+    llm_base_url: str | None  # active backend base URL (None = SDK default / Bedrock)
     grader_model: str
     author_model: str
-    anthropic_api_key: str | None  # legacy / fallback
+    aws_region: str  # Bedrock region; default us-east-1
     max_iterations: int
     pass_threshold: float
     project_root: Path
@@ -50,12 +58,17 @@ def get_settings() -> Settings:
         "postgresql+psycopg://strata:strata@localhost:5433/strata",
     )
     backend = os.getenv("STRATA_LLM_BACKEND", "openai").lower()
-
     if backend == "anthropic":
-        llm_api_key = os.getenv("ANTHROPIC_API_KEY")
-        llm_base_url = None  # Anthropic SDK default
-        grader_default = "claude-haiku-4-5-20251001"
-        author_default = "claude-opus-4-7"
+        raise ValueError(REMOVED_ANTHROPIC_BACKEND)
+
+    aws_region = os.getenv("AWS_REGION") or os.getenv("AWS_DEFAULT_REGION") or DEFAULT_BEDROCK_REGION
+
+    if backend == "bedrock":
+        # boto3 default credential chain; no application API key.
+        llm_api_key = None
+        llm_base_url = None
+        grader_default = BEDROCK_GRADER_MODEL
+        author_default = BEDROCK_AUTHOR_MODEL
     else:
         # openai-compatible (DashScope by default)
         llm_api_key = (
@@ -74,7 +87,7 @@ def get_settings() -> Settings:
         llm_base_url=llm_base_url,
         grader_model=os.getenv("STRATA_GRADER_MODEL", grader_default),
         author_model=os.getenv("STRATA_AUTHOR_MODEL", author_default),
-        anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),
+        aws_region=aws_region,
         max_iterations=int(os.getenv("STRATA_MAX_ITERATIONS", "5")),
         pass_threshold=float(os.getenv("STRATA_PASS_THRESHOLD", "8")),
         project_root=PROJECT_ROOT,

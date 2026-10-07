@@ -149,18 +149,33 @@ def _heatmap_chart(result: AssessmentResult, title: str):
 st.sidebar.title("Strata")
 st.sidebar.caption("Maturity-assessed, rubric-graded AI operating system for the CFO / VP Finance function.")
 
-with st.sidebar.expander("Backend status", expanded=False):
-    backend = os.getenv("STRATA_LLM_BACKEND", "openai")
+
+def _llm_credential_label() -> str:
+    backend = os.getenv("STRATA_LLM_BACKEND", "openai").lower()
+    if backend == "bedrock":
+        region = os.getenv("AWS_REGION") or os.getenv("AWS_DEFAULT_REGION") or "us-east-1"
+        return f"AWS credential chain ({region})"
     has_key = bool(
         os.getenv("DASHSCOPE_API_KEY")
         or os.getenv("OPENAI_API_KEY")
-        or os.getenv("ANTHROPIC_API_KEY")
+        or os.getenv("STRATA_LLM_API_KEY")
     )
-    base_url = os.getenv("STRATA_LLM_BASE_URL", "(SDK default)")
+    return "set" if has_key else "missing"
+
+
+with st.sidebar.expander("Backend status", expanded=False):
+    backend = os.getenv("STRATA_LLM_BACKEND", "openai")
+    credential = _llm_credential_label()
+    if backend.lower() == "bedrock":
+        base_url = os.getenv("AWS_REGION") or os.getenv("AWS_DEFAULT_REGION") or "us-east-1"
+        base_label = "Region"
+    else:
+        base_url = os.getenv("STRATA_LLM_BASE_URL", "(SDK default)")
+        base_label = "Base URL"
     grader_model = os.getenv("STRATA_GRADER_MODEL", "(default)")
     st.write(f"**Backend:** `{backend}`")
-    st.write(f"**Key:** {'set' if has_key else '_unset_ — using mock'}")
-    st.write(f"**Base URL:** `{base_url}`")
+    st.write(f"**Credentials:** {credential}")
+    st.write(f"**{base_label}:** `{base_url}`")
     st.write(f"**Grader model:** `{grader_model}`")
 
 uploaded = st.sidebar.file_uploader(
@@ -284,7 +299,7 @@ with tab_deliver:
 
     backend_label = (
         f"Use LLM (backend: {os.getenv('STRATA_LLM_BACKEND', 'openai')}; "
-        f"key: {'set' if (os.getenv('DASHSCOPE_API_KEY') or os.getenv('OPENAI_API_KEY') or os.getenv('ANTHROPIC_API_KEY')) else 'missing'})"
+        f"credentials: {_llm_credential_label()})"
     )
     use_llm = st.checkbox(backend_label, value=False)
 

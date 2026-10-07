@@ -1,7 +1,7 @@
 """Datadog LLM Observability bootstrap.
 
-Enables Datadog LLM Observability in *agentless* mode so that every OpenAI /
-Anthropic / CrewAI / openai-agents call this app makes is captured as a span and
+Enables Datadog LLM Observability in *agentless* mode so that every OpenAI-compatible
+or Amazon Bedrock call this app makes is captured as a span and
 shipped to Datadog -- no Datadog Agent process required. It is a no-op unless
 ``DD_LLMOBS_ENABLED`` is truthy, so local development, tests and CI are
 unaffected, and it degrades gracefully (a warning, not a crash) if ``ddtrace``

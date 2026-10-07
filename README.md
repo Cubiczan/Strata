@@ -69,8 +69,8 @@ clean-room codebase shipping with Postgres schema and a Vercel-ready FastAPI UI.
 │      decide(assessment) → RouteDecision                           │
 │      route(assessment, inputs) → executes weakest-cap chain       │
 │      chain composition (depends_on), perception adapters,         │
-│      LLM-backend switch (DashScope/Qwen by default, Anthropic     │
-│      optional)                                                    │
+│      LLM-backend switch (DashScope/Qwen by default, Amazon Nova   │
+│      on Bedrock optional)                                         │
 ├───────────────────────────────────────────────────────────────────┤
 │  L4  DELIVERABLE FACTORY                                          │
 │      persona → draft → grader → revise loop → pass-or-max-iter    │
@@ -189,12 +189,12 @@ Environment variables (full list in [`.env.example`](./.env.example)):
 | Variable | Default | Purpose |
 |---|---|---|
 | `DATABASE_URL` | `postgresql+psycopg://strata:strata@localhost:5433/strata` | Postgres connection for local or hosted deployments |
-| `STRATA_LLM_BACKEND` | `openai` | `openai` (DashScope/OpenAI-compatible) or `anthropic` |
-| `STRATA_LLM_BASE_URL` | DashScope China endpoint | OpenAI-compatible base URL |
+| `STRATA_LLM_BACKEND` | `openai` | `openai` (DashScope/OpenAI-compatible) or `bedrock` (Amazon Nova) |
+| `STRATA_LLM_BASE_URL` | DashScope China endpoint | OpenAI-compatible base URL (ignored when `backend=bedrock`) |
 | `DASHSCOPE_API_KEY` | _unset_ | Active when `backend=openai` |
-| `ANTHROPIC_API_KEY` | _unset_ | Active when `backend=anthropic` |
-| `STRATA_GRADER_MODEL` | `qwen3.6-flash` | Model used by the rubric grader |
-| `STRATA_AUTHOR_MODEL` | `qwen3.6-flash` | Model used by the author |
+| `AWS_REGION` | `us-east-1` | Bedrock region. Standard AWS credential chain; no API key |
+| `STRATA_GRADER_MODEL` | `qwen3.6-flash` | Grader model. Bedrock default: `us.amazon.nova-lite-v1:0` |
+| `STRATA_AUTHOR_MODEL` | `qwen3.6-flash` | Author model. Bedrock default: `us.amazon.nova-pro-v1:0` |
 | `STRATA_MAX_ITERATIONS` | `5` | Cap on revise-and-grade loops |
 | `STRATA_PASS_THRESHOLD` | `8` | Score threshold (out of rubric max) for pass |
 | `ASTRA_DB_API_ENDPOINT` | _unset_ | Astra DB API URL (vector exemplar store; optional) |
@@ -204,6 +204,12 @@ Environment variables (full list in [`.env.example`](./.env.example)):
 
 Verified models on DashScope (lowercase): `qwen3.6-flash`, `qwen3.6-35b-a3b`,
 `qwen3.6-plus`, `qwen3.5-plus`. Use `qwen3.6-flash` for speed/cost.
+
+`STRATA_LLM_BACKEND=bedrock` calls Amazon Bedrock Runtime Converse with
+Amazon Nova Pro (`us.amazon.nova-pro-v1:0`) for the author and Nova Lite
+(`us.amazon.nova-lite-v1:0`) for the grader. Credentials come from the
+standard AWS chain; the region defaults to `us-east-1`. The removed
+`anthropic` value fails at startup and tells you to switch to `bedrock`.
 
 ### Vector exemplar store (v0.7.0)
 
@@ -263,11 +269,11 @@ The API is also available directly at `/api/assess`, `/api/roadmap`,
 ## Tests
 
 ```bash
-pytest                                                # 155 tests (the suite ships green)
-pytest --cov                                          # 97% coverage
-ANTHROPIC_API_KEY=sk-... pytest -m live_llm          # opt-in live test against any of 12 chains
+pytest                                                # offline suite (ships green)
+pytest --cov                                          # coverage
 DASHSCOPE_API_KEY=sk-... STRATA_LLM_BACKEND=openai \
-  pytest -m live_llm                                  # same, via DashScope/Qwen
+  pytest -m live_llm                                  # opt-in live test via DashScope/Qwen
+STRATA_LLM_BACKEND=bedrock pytest -m live_llm        # same, via Amazon Nova on Bedrock
 STRATA_LIVE_POSTGRES_URL=postgresql+psycopg://... \
   pytest -m live_postgres                             # opt-in live Postgres alembic verification
 ```

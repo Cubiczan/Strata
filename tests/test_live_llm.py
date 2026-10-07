@@ -4,8 +4,8 @@ Skipped by default. Run with:
     # OpenAI-compatible (DashScope International default)
     STRATA_LLM_BACKEND=openai DASHSCOPE_API_KEY=sk-... pytest -m live_llm
 
-    # Anthropic
-    STRATA_LLM_BACKEND=anthropic ANTHROPIC_API_KEY=sk-... pytest -m live_llm
+    # Amazon Nova on Bedrock (standard AWS credential chain, us-east-1)
+    STRATA_LLM_BACKEND=bedrock pytest -m live_llm
 
 Each test exercises the real iteration loop end to end:
 - the configured LLM grader actually grades
@@ -59,18 +59,21 @@ def _all_chain_ids() -> list[str]:
 
 
 def _has_live_llm_key() -> bool:
+    backend = os.getenv("STRATA_LLM_BACKEND", "openai").lower()
+    if backend == "bedrock":
+        # Explicit bedrock selection is the opt-in; credentials come from the AWS chain.
+        return True
     return bool(
         os.getenv("DASHSCOPE_API_KEY")
         or os.getenv("OPENAI_API_KEY")
         or os.getenv("STRATA_LLM_API_KEY")
-        or os.getenv("ANTHROPIC_API_KEY")
     )
 
 
 @pytest.mark.live_llm
 @pytest.mark.skipif(
     not _has_live_llm_key(),
-    reason="No LLM API key set (DASHSCOPE_API_KEY / OPENAI_API_KEY / ANTHROPIC_API_KEY); skipping",
+    reason="No LLM credentials (DASHSCOPE_API_KEY / OPENAI_API_KEY, or STRATA_LLM_BACKEND=bedrock); skipping",
 )
 @pytest.mark.parametrize("chain_id", _all_chain_ids())
 def test_chain_runs_against_real_llm(chain_id: str):

@@ -1,5 +1,5 @@
 """Generic LLM author. The author prompt is built from the persona + rubric +
-inputs + history triple, so a single Anthropic-backed author works for every
+inputs + history triple, so one backend-backed author works for every
 deliverable type.
 """
 
@@ -73,16 +73,12 @@ def _dump_inputs(inputs: dict[str, Any]) -> str:
     return json.dumps(inputs, indent=2, default=str)
 
 
-def anthropic_author_factory(model: str | None = None):  # pragma: no cover - integration only
-    """Returns an Author callable backed by Anthropic. Lazy-imports anthropic."""
+def bedrock_author_factory(model: str | None = None):
+    """Returns an Author callable backed by Amazon Nova on Bedrock Converse."""
+    from strata.deliverable.bedrock import AUTHOR_SYSTEM, bedrock_runtime_client, converse_text
+
     s = get_settings()
-    try:
-        import anthropic
-    except ImportError as e:
-        raise ImportError("install with `pip install -e '.[llm]'` to use Anthropic") from e
-    if not s.anthropic_api_key:
-        raise RuntimeError("ANTHROPIC_API_KEY not set; cannot use --use-llm with anthropic backend")
-    client = anthropic.Anthropic(api_key=s.anthropic_api_key)
+    client = bedrock_runtime_client()
     use_model = model or s.author_model
 
     def _author(
@@ -92,13 +88,13 @@ def anthropic_author_factory(model: str | None = None):  # pragma: no cover - in
         history: list[GraderResult],
     ) -> str:
         prompt = build_author_prompt(persona, rubric, inputs, history)
-        msg = client.messages.create(
+        return converse_text(
+            client,
             model=use_model,
+            system=AUTHOR_SYSTEM,
+            user=prompt,
             max_tokens=4096,
-            system="You write CFO-grade financial deliverables. Be terse and tie out.",
-            messages=[{"role": "user", "content": prompt}],
         )
-        return "".join(b.text for b in msg.content if hasattr(b, "text"))
 
     return _author
 

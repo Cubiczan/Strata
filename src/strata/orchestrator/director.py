@@ -5,7 +5,8 @@ then executes it via the L4 deliverable factory and persists artifacts.
 
 LLM choice is a Director-level toggle (`use_llm`). Mock by default — the same
 mock author/grader pair the test suite uses. When `use_llm=True`, the grader
-swaps to AnthropicLLM and the author swaps to the Anthropic-backed author.
+and author swap to the configured backend: OpenAI-compatible DashScope by
+default, or Amazon Nova on Bedrock.
 """
 
 from __future__ import annotations
@@ -249,12 +250,12 @@ class Director:
             from strata.config import get_settings
 
             backend = get_settings().llm_backend
-            if backend == "anthropic":
-                from strata.deliverable.author import anthropic_author_factory
-                from strata.deliverable.grader import AnthropicLLM
+            if backend == "bedrock":
+                from strata.deliverable.author import bedrock_author_factory
+                from strata.deliverable.grader import BedrockLLM
 
-                author: Author = anthropic_author_factory()
-                grader = Grader(llm=AnthropicLLM(), pass_threshold_pct=70.0)
+                author: Author = bedrock_author_factory()
+                grader = Grader(llm=BedrockLLM(), pass_threshold_pct=70.0)
             elif backend == "openai":
                 from strata.deliverable.author import openai_compatible_author_factory
                 from strata.deliverable.grader import OpenAICompatibleLLM
@@ -263,7 +264,7 @@ class Director:
                 grader = Grader(llm=OpenAICompatibleLLM(), pass_threshold_pct=70.0)
             else:
                 raise ValueError(
-                    f"unknown STRATA_LLM_BACKEND='{backend}'; expected 'openai' or 'anthropic'"
+                    f"unknown STRATA_LLM_BACKEND='{backend}'; expected 'openai' or 'bedrock'"
                 )
         else:
             author = chain.mock_author

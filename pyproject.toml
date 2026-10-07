@@ -32,7 +32,7 @@ dev = [
     "uvicorn>=0.30",
 ]
 llm = [
-    "anthropic>=0.34",
+    "boto3>=1.35",
     "openai>=1.40",
     "ddtrace>=2.8",
 ]
@@ -62,7 +62,7 @@ packages = ["src/strata"]
 testpaths = ["tests"]
 addopts = "-ra --strict-markers"
 markers = [
-    "live_llm: hits real Anthropic; runs only when ANTHROPIC_API_KEY is set",
+    "live_llm: hits a real LLM (DashScope or Amazon Bedrock); opt-in",
     "live_postgres: hits a live Postgres at DATABASE_URL; opt-in",
     "live_astra: hits a live Astra DB at ASTRA_DB_API_ENDPOINT; opt-in",
 ]
